@@ -5,7 +5,6 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { notFound } from 'next/navigation';
-import { CommentSection } from '@/components/CommentSection'; // 追加
 
 export async function generateStaticParams() {
   const posts = await getPostList();
@@ -172,9 +171,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   )}
                 </div>
               </div>
-
-              {/* Comment Section */}
-              <CommentSection slug={resolvedParams.slug} />
 
             </article>
           </main>
