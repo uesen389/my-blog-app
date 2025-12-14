@@ -1,16 +1,17 @@
 'use client';
 
 import Link from 'next/link';
-import { PostMeta } from '@/lib/types';
+import { PostMeta, BlogSettings } from '@/lib/types';
 import { Calendar, Tag } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
 type BlogListProps = {
   posts: PostMeta[];
+  settings: BlogSettings;
 };
 
-function BlogListContent({ posts }: BlogListProps) {
+function BlogListContent({ posts, settings }: BlogListProps) {
   const searchParams = useSearchParams();
   const selectedCategory = searchParams.get('category');
   const selectedArchive = searchParams.get('archive');
@@ -146,12 +147,11 @@ function BlogListContent({ posts }: BlogListProps) {
                    <img src="/my-blog-app/images/aikkkiii_cirkle_k_60.jpg" alt="Profile" className="w-full h-full object-cover" />
                  </div>
                  <div>
-                   <div className="font-bold">Kouryu</div>
+                   <div className="font-bold">{settings.profileName}</div>
                  </div>
               </div>
-              <p className="text-sm text-gray-600">
-                愛知県在住。生まれ育ちは千葉県で、大学と大学院6年間を仙台で過ごし今に至る。<br />
-                趣味特技：合気道（合気会二段）
+              <p className="text-sm text-gray-600 whitespace-pre-wrap">
+                {settings.profileDescription}
               </p>
             </div>
 

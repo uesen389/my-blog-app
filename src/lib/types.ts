@@ -9,14 +9,14 @@ export interface Post {
   excerpt?: string;
 }
 
-export interface PostMeta {
-  slug: string;
-  title: string;
-  date: string;
-  sha?: string;
-  published?: boolean;
-  category?: string;
   excerpt?: string;
+}
+
+export interface BlogSettings {
+  blogTitle: string;
+  blogDescription: string;
+  profileName: string;
+  profileDescription: string;
 }
 
 export interface Comment {

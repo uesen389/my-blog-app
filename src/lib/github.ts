@@ -7,6 +7,8 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN || process.env.NEXT_PUBLIC_GITHUB_
 const REPO_OWNER = process.env.REPO_OWNER || process.env.NEXT_PUBLIC_REPO_OWNER;
 const REPO_NAME = process.env.REPO_NAME || process.env.NEXT_PUBLIC_REPO_NAME;
 
+console.log(`GitHub Config: Owner=${REPO_OWNER}, Repo=${REPO_NAME}, TokenExists=${!!GITHUB_TOKEN}`);
+
 if (!GITHUB_TOKEN || !REPO_OWNER || !REPO_NAME) {
   console.error('GitHub configuration is missing. Please check .env.local');
 }
@@ -171,6 +173,36 @@ export async function deletePost(slug: string, sha: string): Promise<boolean> {
   } catch (error) {
     console.error('Error deleting post:', error);
     throw error;
+  }
+}
+
+// Settings Logic
+const SETTINGS_PATH = 'content/settings.json';
+
+const DEFAULT_SETTINGS: import('./types').BlogSettings = {
+  blogTitle: 'Kouryuの記録帳',
+  blogDescription: '思考の発散場所。合気道、日々の生活での気づき、その他ガジェット関係など。',
+  profileName: 'Kouryu',
+  profileDescription: '愛知県在住。生まれ育ちは千葉県で、大学と大学院6年間を仙台で過ごし今に至る。\n趣味特技：合気道（合気会二段）',
+};
+
+export async function getSettings(): Promise<import('./types').BlogSettings> {
+  try {
+    const { data: fileData } = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+      owner: REPO_OWNER!,
+      repo: REPO_NAME!,
+      path: SETTINGS_PATH,
+    });
+
+    if ('content' in fileData && fileData.content) {
+      const content = decodeBase64(fileData.content);
+      return JSON.parse(content);
+    }
+    return DEFAULT_SETTINGS;
+  } catch (error: any) {
+    console.error(`Error fetching settings: status=${error.status}, message=${error.message}`);
+    if (error.status === 404) return DEFAULT_SETTINGS;
+    return DEFAULT_SETTINGS;
   }
 }
 

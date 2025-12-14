@@ -1,4 +1,4 @@
-import { getPostContent, getPostList } from '@/lib/github';
+import { getPostContent, getPostList, getSettings } from '@/lib/github';
 import Link from 'next/link';
 import { Calendar, Tag, ArrowLeft } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
@@ -16,6 +16,7 @@ export async function generateStaticParams() {
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   const post = await getPostContent(resolvedParams.slug);
+  const settings = await getSettings();
 
   if (!post) {
     notFound();
@@ -63,10 +64,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <header className="w-full py-8 md:py-12 px-4">
         <div className="max-w-[1200px] mx-auto">
           <Link href="/blog" className="text-3xl md:text-4xl font-bold mb-3 block">
-            Kouryuの記録帳
+            {settings.blogTitle}
           </Link>
-          <p className="text-gray-700">
-             思考の発散場所。合気道、日々の生活での気づき、その他ガジェット関係など。
+          <p className="text-gray-700 whitespace-pre-wrap">
+             {settings.blogDescription}
           </p>
         </div>
       </header>
@@ -185,12 +186,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                    <img src="/my-blog-app/images/aikkkiii_cirkle_k_60.jpg" alt="Profile" className="w-full h-full object-cover" />
                  </div>
                  <div>
-                   <div className="font-bold">Kouryu</div>
+                   <div className="font-bold">{settings.profileName}</div>
                  </div>
               </div>
-              <p className="text-sm text-gray-600">
-                愛知県在住。生まれ育ちは千葉県で、大学と大学院6年間を仙台で過ごし今に至る。<br />
-                趣味特技：合気道（合気会二段）
+              <p className="text-sm text-gray-600 whitespace-pre-wrap">
+                {settings.profileDescription}
               </p>
             </div>
 
