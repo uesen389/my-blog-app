@@ -3,12 +3,19 @@ export interface Post {
   title: string;
   date: string;
   content: string;
-  sha?: string; // GitHub SHA for updates/deletions
+  sha?: string;
   published?: boolean;
-  category?: string; // Added based on design
+  category?: string;
   excerpt?: string;
 }
 
+export interface PostMeta {
+  slug: string;
+  title: string;
+  date: string;
+  sha?: string;
+  published?: boolean;
+  category?: string;
   excerpt?: string;
 }
 
