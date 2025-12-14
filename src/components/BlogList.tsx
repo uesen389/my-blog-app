@@ -201,7 +201,7 @@ function BlogListContent({ posts, settings }: BlogListProps) {
             <div>
               <h3 className="font-bold text-lg mb-4 border-b pb-2">Archive</h3>
               <ul className="space-y-2">
-                {sortedArchives.map(([ym, count]) => (
+                {sortedArchives.map(([ym, count]: [string, number]) => (
                   <li key={ym}>
                     <Link 
                       href={`/blog?archive=${ym}`} 
