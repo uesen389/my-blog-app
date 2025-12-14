@@ -36,7 +36,7 @@ function BlogListContent({ posts, settings }: BlogListProps) {
     return acc;
   }, {} as Record<string, number>);
 
-  const sortedArchives = Object.entries(archives).sort(([a], [b]) => b.localeCompare(a));
+  const sortedArchives = Object.entries(archives).sort(([a], [b]) => b.localeCompare(a)) as [string, number][];
 
   // Helper to format YYYY-MM to Japanese
   const formatArchiveDate = (ym: string) => {

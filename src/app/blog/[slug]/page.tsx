@@ -51,7 +51,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     acc[yearMonth] = (acc[yearMonth] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
-  const sortedArchives = Object.entries(archives).sort(([a], [b]) => b.localeCompare(a));
+  const sortedArchives = Object.entries(archives).sort(([a], [b]) => b.localeCompare(a)) as [string, number][];
 
   const formatArchiveDate = (ym: string) => {
     const [y, m] = ym.split('-');
