@@ -144,7 +144,7 @@ function BlogListContent({ posts, settings }: BlogListProps) {
               <h3 className="font-bold text-lg mb-4 border-b pb-2">Profile</h3>
               <div className="flex items-center gap-4 mb-4">
                  <div className="w-16 h-16 rounded-full flex-shrink-0 overflow-hidden">
-                   <img src="/my-blog-app/images/aikkkiii_cirkle_k_60.jpg" alt="Profile" className="w-full h-full object-cover" />
+                   <img src="/images/aikkkiii_cirkle_k_60.jpg" alt="Profile" className="w-full h-full object-cover" />
                  </div>
                  <div>
                    <div className="font-bold">{settings.profileName}</div>
