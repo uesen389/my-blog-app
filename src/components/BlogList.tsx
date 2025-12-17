@@ -16,20 +16,23 @@ function BlogListContent({ posts, settings }: BlogListProps) {
   const selectedCategory = searchParams.get('category');
   const selectedArchive = searchParams.get('archive');
 
+  // Filter published posts for Sidebar and Menu
+  const publishedPosts = posts.filter(p => p.published);
+
   // Extract categories
   const desiredOrder = ['合気道', '技術', 'ラーメン', 'ガジェット', '地理', '日常'];
-  const uniqueCategories = Array.from(new Set(posts.map(p => p.category).filter(Boolean))) as string[];
+  const uniqueCategories = Array.from(new Set(publishedPosts.map(p => p.category).filter(Boolean))) as string[];
   const sortedCategories = desiredOrder.filter(cat => uniqueCategories.includes(cat));
   const otherCategories = uniqueCategories.filter(cat => !desiredOrder.includes(cat)).sort();
   const categories = [...sortedCategories, ...otherCategories];
 
   const categoryCounts = categories.reduce((acc, cat) => {
-    acc[cat] = posts.filter(p => p.category === cat).length;
+    acc[cat] = publishedPosts.filter(p => p.category === cat).length;
     return acc;
   }, {} as Record<string, number>);
 
   // Extract archives (YYYY-MM)
-  const archives = posts.reduce((acc, post) => {
+  const archives = publishedPosts.reduce((acc, post) => {
     if (!post.date) return acc;
     const yearMonth = post.date.substring(0, 7); // YYYY-MM
     acc[yearMonth] = (acc[yearMonth] || 0) + 1;
@@ -44,8 +47,8 @@ function BlogListContent({ posts, settings }: BlogListProps) {
     return `${y}年${parseInt(m)}月`;
   };
 
-  // Filter posts
-  let filteredPosts = posts.filter(p => p.published);
+  // Filter posts for Main Content
+  let filteredPosts = publishedPosts;
   
   if (selectedCategory) {
     filteredPosts = filteredPosts.filter(p => p.category === selectedCategory);
@@ -159,7 +162,7 @@ function BlogListContent({ posts, settings }: BlogListProps) {
             <div>
               <h3 className="font-bold text-lg mb-4 border-b pb-2">Recent Posts</h3>
               <ul className="space-y-3">
-                {posts.slice(0, 5).map((post) => (
+                {publishedPosts.slice(0, 5).map((post) => (
                   <li key={post.slug}>
                     <Link href={`/blog/${post.slug}`} className="block group">
                       <span className="text-sm text-gray-600 group-hover:text-black line-clamp-2">

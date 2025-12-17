@@ -8,7 +8,7 @@ import { notFound } from 'next/navigation';
 
 export async function generateStaticParams() {
   const posts = await getPostList();
-  return posts.map((post) => ({
+  return posts.filter(p => p.published).map((post) => ({
     slug: post.slug,
   }));
 }
@@ -18,12 +18,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const post = await getPostContent(resolvedParams.slug);
   const settings = await getSettings();
 
-  if (!post) {
+  if (!post || !post.published) {
     notFound();
   }
 
   // Fetch for Sidebar & Navigation
-  const allPosts = await getPostList();
+  const allRawPosts = await getPostList();
+  const allPosts = allRawPosts.filter(p => p.published);
   
   // Find current post index for navigation
   // allPosts is sorted by date desc (newest first)
