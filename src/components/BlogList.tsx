@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { PostMeta, BlogSettings } from '@/lib/types';
 import { Calendar, Tag } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 
 type BlogListProps = {
   posts: PostMeta[];
@@ -15,6 +15,23 @@ function BlogListContent({ posts, settings }: BlogListProps) {
   const searchParams = useSearchParams();
   const selectedCategory = searchParams.get('category');
   const selectedArchive = searchParams.get('archive');
+
+  // Helper to format YYYY-MM to Japanese
+  const formatArchiveDate = (ym: string) => {
+    const [y, m] = ym.split('-');
+    return `${y}年${parseInt(m)}月`;
+  };
+
+  // Update document title for client-side navigation
+  useEffect(() => {
+    if (selectedCategory) {
+      document.title = `${selectedCategory} | ${settings.blogTitle}`;
+    } else if (selectedArchive) {
+      document.title = `${formatArchiveDate(selectedArchive)} | ${settings.blogTitle}`;
+    } else {
+      document.title = settings.blogTitle;
+    }
+  }, [selectedCategory, selectedArchive, settings.blogTitle]);
 
   // Filter published posts for Sidebar and Menu
   const publishedPosts = posts.filter(p => p.published);
