@@ -34,8 +34,18 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const post = await getPostContent(resolvedParams.slug);
   const settings = await getSettings();
 
-  if (!post || !post.published) {
-    notFound();
+  if (!post) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">記事が見つかりません</h1>
+          <p className="mb-4">お探しの記事は削除されたか、URLが間違っている可能性があります。</p>
+          <Link href="/blog" className="text-blue-600 hover:underline">
+            ブログトップへ戻る
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   // Fetch for Sidebar & Navigation
